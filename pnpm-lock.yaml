@@ -1,0 +1,43 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    devDependencies:
+      '@kevisual/multica-run':
+        specifier: 1.0.2
+        version: 1.0.2
+
+packages:
+
+  '@kevisual/multica-run@1.0.2':
+    resolution: {integrity: sha512-NAnulVDWXA0sdJTYR9OtZHLCVRgFo+xr1BcCTJ5RrtWi9nYPNZz/sWvwe48vSCACgjrD12tI8S4pMN3hN5c+xQ==}
+    hasBin: true
+
+  '@kevisual/router@0.2.12':
+    resolution: {integrity: sha512-5aUexJlQYSXbkc/LBl8T+JnjyNFbvNA1PQuqy44lZQmKEtSWxvjoDAHmIFRCPDH/tezrpbLWL0lzjfVifIqkQg==}
+
+  '@kevisual/types@0.0.14':
+    resolution: {integrity: sha512-xjiWTAYmntg6pmkyUhcy2UXYxN4QR3IyN8W1Qa7YU/KD00utNmesrRuJiPzywszSoQ0Cg+VESVWPZaq3mHU9XQ==}
+
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
+
+snapshots:
+
+  '@kevisual/multica-run@1.0.2':
+    dependencies:
+      '@kevisual/router': 0.2.12
+      '@kevisual/types': 0.0.14
+
+  '@kevisual/router@0.2.12':
+    dependencies:
+      zod: 4.4.3
+
+  '@kevisual/types@0.0.14': {}
+
+  zod@4.4.3: {}

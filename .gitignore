@@ -1,0 +1,28 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# runtime/logs
+logs/*
+!logs/.gitkeep
+*.log
+
+# secrets / local config
+.env
+.env.*
+*.key
+*.pem
+
+# generated artifacts
+artifacts/*
+!artifacts/.gitkeep
+reports/*
+!reports/.gitkeep
+workspace/*
+!workspace/.gitkeep
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

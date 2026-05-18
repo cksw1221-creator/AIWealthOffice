@@ -16,10 +16,21 @@ logs/*
 # generated artifacts
 artifacts/*
 !artifacts/.gitkeep
+!artifacts/quant_mvp/
+!artifacts/quant_mvp/**
 reports/*
 !reports/.gitkeep
+!reports/quant_mvp_report.md
+!reports/environment_report.md
 workspace/*
 !workspace/.gitkeep
+!workspace/worker_registry.json
+!workspace/current_gap_list.md
+!workspace/multica_capability_matrix.json
+
+# Python
+__pycache__/
+*.py[cod]
 
 # OS/editor
 .DS_Store

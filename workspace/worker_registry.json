@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Worker registry for AI Wealth Office. Synced with Multica agent roster on 2026-05-18.",
+  "team_policy": {
+    "cost_and_capability_order": [
+      "Coder-gpt-5.5-high-Consultant",
+      "Coder-gpt-5.4-high-Builder",
+      "Coder-gpt-5.4-medium-Builder",
+      "Coder-minimax-m2.7-default-Junior"
+    ],
+    "routing_rules": {
+      "gpt-5.5-high": "Expensive senior consultant. Use only for difficult architecture, hard debugging, ambiguous decisions, or CEO escalation.",
+      "gpt-5.4-high": "Primary high-effort production worker. Use for important implementation, review, and integration when quality matters.",
+      "gpt-5.4-medium": "Primary cost-efficient production worker. Use for normal coding, tests, refactors, and repeatable engineering tasks.",
+      "minimax-m2.7-default": "Junior worker. Use for simple docs, formatting, boilerplate, low-risk chores, and tasks that do not require deep reasoning."
+    },
+    "ceo_principle": "Prefer gpt-5.4 workers for day-to-day throughput and cost control. Escalate to gpt-5.5 only when the cheaper team cannot solve the problem."
+  },
+  "workers": {
+    "Coder-gpt-5.5-high-Consultant": {
+      "agent_id": "353d8e8a-3d6b-435d-86db-e3d432d7f01c",
+      "role": "Coder",
+      "runtime": "codex",
+      "runtime_id": "12a27f74-d9ae-4822-8a34-ba42478c3119",
+      "model": "gpt-5.5",
+      "reasoning_effort": "high",
+      "custom_args": [
+        "-c",
+        "model_reasoning_effort=\"high\""
+      ],
+      "cost_tier": "consultant_expensive",
+      "priority_use": "rare_escalation",
+      "scope": [
+        "hard architecture",
+        "ambiguous design",
+        "difficult debugging",
+        "CEO escalation"
+      ],
+      "focus": "Senior consultant coder; expensive hourly advisor."
+    },
+    "Coder-gpt-5.4-high-Builder": {
+      "agent_id": "a29c8d6f-fa67-4047-bcf2-93ef4bbd1412",
+      "role": "Coder",
+      "runtime": "codex",
+      "runtime_id": "12a27f74-d9ae-4822-8a34-ba42478c3119",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "custom_args": [
+        "-c",
+        "model_reasoning_effort=\"high\""
+      ],
+      "cost_tier": "main_worker",
+      "priority_use": "primary_hard_work",
+      "scope": [
+        "important implementation",
+        "review",
+        "integration",
+        "cost-efficient hard work"
+      ],
+      "focus": "Main high-effort production coder; cheaper than gpt-5.5."
+    },
+    "Coder-gpt-5.4-medium-Builder": {
+      "agent_id": "1b5c0619-c9df-4c4a-b315-66301edcdf5f",
+      "role": "Coder",
+      "runtime": "codex",
+      "runtime_id": "12a27f74-d9ae-4822-8a34-ba42478c3119",
+      "model": "gpt-5.4",
+      "reasoning_effort": "medium",
+      "custom_args": [
+        "-c",
+        "model_reasoning_effort=\"medium\""
+      ],
+      "cost_tier": "main_worker",
+      "priority_use": "primary_normal_work",
+      "scope": [
+        "normal implementation",
+        "tests",
+        "refactors",
+        "repeatable coding tasks"
+      ],
+      "focus": "Main cost-efficient production coder."
+    },
+    "Coder-minimax-m2.7-default-Junior": {
+      "agent_id": "c86efcf7-4747-48aa-b8ad-638f48df0edd",
+      "role": "Coder",
+      "runtime": "claude-code",
+      "runtime_id": "04f73d53-a3d1-482c-a125-367b170e3c06",
+      "model": "",
+      "effective_model": "MiniMax-M2.7",
+      "reasoning_effort": "runtime_default",
+      "custom_args": [],
+      "cost_tier": "junior",
+      "priority_use": "simple_low_risk_work",
+      "scope": [
+        "simple docs",
+        "formatting",
+        "boilerplate",
+        "low-risk chores"
+      ],
+      "focus": "Junior/default Claude Code runtime backed by MiniMax-M2.7."
+    }
+  }
+}

@@ -1,62 +1,39 @@
-# Current Gap List — AI Wealth Office (as of 2026-05-18)
+# Current Gap List — AI Wealth Office (as of 2026-05-19)
 
-## Known Gaps
+## Completed
 
-### Stage 0: Environment Probe
-- [x] Multica CLI probe script — done (Coder-A)
-- [x] `multica_capability_matrix.json` — done
-- [ ] GenericAgent → Multica integration point not fully automated
-- [ ] No persistent task queue (relies on issue comments)
+### P0 Bootstrap
+- [x] Multica CLI installed/authenticated; daemon running.
+- [x] MulticaClient/probe scaffold created.
+- [x] Worker registry and task protocol docs created.
+- [x] Quant MVP / Demo 001 baseline created and QC-passing.
 
-### Stage 1: MulticaClient Adapter
-- [ ] `ga_multica/` full module not complete
-- [ ] Polling/watching not implemented
-- [ ] No error recovery on CLI failure
+### P1 Foundation
+- [x] CEO dispatch/watch/accept/rework scripts created.
+- [x] QC runner created; latest QC is 7/7 PASS.
+- [x] Demo 001 formalized.
+- [x] Role prompt first draft created.
+- [x] Multica same-issue resume tested for Claude Code and Codex.
+- [x] P0/P1 Multica projects created and historical issues linked.
 
-### Stage 2: Issue Protocol
-- [x] Issue lifecycle states defined — done
-- [x] Worker contract defined — done
-- [x] Issue templates — done (Coder-B)
+## Open Gaps / Backlog
 
-### Stage 3: Role Prompts
-- [ ] `docs/roles/ceo.md` — not written
-- [ ] `docs/roles/coder.md` — not written
-- [ ] `docs/roles/investment_analyst.md` — not written
-- [ ] `docs/roles/secretary.md` — not written
-- [ ] `docs/roles/pm.md` — not written
+### Role System v2
+- [ ] Existing role prompts are too shallow.
+- [ ] Redesign roles using selective ideas from `msitarzewski/agency-agents`.
+- [ ] Define Coder collaboration model for current 4-Coder team.
+- [ ] Define PM context/session-continuity responsibilities vs CEO final decision rights.
+- Multica backlog issue: AIW-23.
 
-### Stage 4: Quant MVP
-- [x] `wealth_office_quant/` package — created (Coder-C)
-- [x] `scripts/run_quant_mvp.py` — created and verified (Coder-C)
-- [x] `reports/quant_mvp_report.md` — generated (Coder-C)
-- [x] Sample/backtest artifacts — generated under `artifacts/quant_mvp/`
+### Session Continuity Productization
+- [ ] Expose `fresh/resume/fork/force-fresh` choice in CEO scripts.
+- [ ] Persist issue continuity metadata locally and/or in Multica project/issue descriptions.
+- [ ] Document operational policy for when to resume vs start fresh.
 
-### Stage 5-8: QC, Reports, Workflow
-- [ ] QC runner not implemented
-- [ ] Report templates not created
-- [ ] Decision pack template not created
-- [ ] Retrospective not implemented
+### Multica Project Management
+- [ ] Use Multica projects as sprint containers: P0, P1, P2, etc.
+- [ ] Create new work as `backlog` first, then promote to `todo/in_progress` when CEO selects it.
+- [ ] Keep experiments done/cancelled so they do not pollute active planning.
 
-### Stage 9-14: Assets, Governance, Scaling
-- [ ] Data asset library — not created
-- [ ] Strategy asset library — not created
-- [ ] Agent performance scorecard — not created
-- [ ] Failure casebook — not created
-
-## Critical Path Dependencies
-
-```
-Stage 0 (done)
-  └─> Stage 1 (blocked: ga_multica incomplete)
-        └─> Stage 2 (partially done)
-              └─> Stage 3 (blocked: role prompts missing)
-                    └─> Stage 4 (blocked: Coder-C waiting)
-                          └─> Stage 5+ (blocked)
-```
-
-## Immediate Next Steps
-
-1. Complete `ga_multica/` adapter (Coder-A follow-up)
-2. Write role prompts (CEO, Coder, Analyst, Secretary, PM)
-3. Run quant MVP demo (Coder-C)
-4. Implement QC runner (future work)
+### Strategy Work
+- [ ] Do not start more strategy demos until Role System v2 and continuity workflow are clarified.

@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "description": "Worker registry for AI Wealth Office. Synced with Multica agent roster on 2026-05-18.",
+  "description": "Worker registry for AI Wealth Office. Synced with Multica agent roster on 2026-05-19.",
   "team_policy": {
     "cost_and_capability_order": [
       "Coder-gpt-5.5-high-Consultant",
@@ -26,7 +26,9 @@
       "reasoning_effort": "high",
       "custom_args": [
         "-c",
-        "model_reasoning_effort=\"high\""
+        "model_reasoning_effort=\"high\"",
+        "-c",
+        "sandbox_mode=\"danger-full-access\""
       ],
       "cost_tier": "consultant_expensive",
       "priority_use": "rare_escalation",
@@ -36,7 +38,9 @@
         "difficult debugging",
         "CEO escalation"
       ],
-      "focus": "Senior consultant coder; expensive hourly advisor."
+      "focus": "Senior consultant coder; expensive hourly advisor.",
+      "sandbox_mode": "danger-full-access",
+      "resume_capability": "same_issue_comment_followup_verified"
     },
     "Coder-gpt-5.4-high-Builder": {
       "agent_id": "a29c8d6f-fa67-4047-bcf2-93ef4bbd1412",
@@ -47,7 +51,9 @@
       "reasoning_effort": "high",
       "custom_args": [
         "-c",
-        "model_reasoning_effort=\"high\""
+        "model_reasoning_effort=\"high\"",
+        "-c",
+        "sandbox_mode=\"danger-full-access\""
       ],
       "cost_tier": "main_worker",
       "priority_use": "primary_hard_work",
@@ -57,7 +63,9 @@
         "integration",
         "cost-efficient hard work"
       ],
-      "focus": "Main high-effort production coder; cheaper than gpt-5.5."
+      "focus": "Main high-effort production coder; cheaper than gpt-5.5.",
+      "sandbox_mode": "danger-full-access",
+      "resume_capability": "same_issue_comment_followup_verified"
     },
     "Coder-gpt-5.4-medium-Builder": {
       "agent_id": "1b5c0619-c9df-4c4a-b315-66301edcdf5f",
@@ -68,7 +76,9 @@
       "reasoning_effort": "medium",
       "custom_args": [
         "-c",
-        "model_reasoning_effort=\"medium\""
+        "model_reasoning_effort=\"medium\"",
+        "-c",
+        "sandbox_mode=\"danger-full-access\""
       ],
       "cost_tier": "main_worker",
       "priority_use": "primary_normal_work",
@@ -78,7 +88,9 @@
         "refactors",
         "repeatable coding tasks"
       ],
-      "focus": "Main cost-efficient production coder."
+      "focus": "Main cost-efficient production coder.",
+      "sandbox_mode": "danger-full-access",
+      "resume_capability": "same_issue_comment_followup_verified"
     },
     "Coder-minimax-m2.7-default-Junior": {
       "agent_id": "c86efcf7-4747-48aa-b8ad-638f48df0edd",
@@ -97,7 +109,13 @@
         "boilerplate",
         "low-risk chores"
       ],
-      "focus": "Junior/default Claude Code runtime backed by MiniMax-M2.7."
+      "focus": "Junior/default Claude Code runtime backed by MiniMax-M2.7.",
+      "resume_capability": "same_issue_comment_followup_verified"
     }
+  },
+  "runtime_policy": {
+    "session_continuity": "Patched local Multica daemon supports same-issue comment follow-up resume when MULTICA_RESUME_COMMENT_SESSIONS=1.",
+    "codex_sandbox": "Codex Coder agents use sandbox_mode=\"danger-full-access\" via custom_args for unattended work. Use only on trusted repos.",
+    "context_ownership": "PM maintains issue/project graph and continuity metadata; CEO chooses fresh/resume/fork and owns final decision."
   }
 }

@@ -59,6 +59,20 @@ You turn priorities into executable issues and maintain project memory across se
 5. Recommend routing and session mode to the CEO.
 6. Update the issue graph and statuses as work progresses.
 
+## Scheduling Checklist
+
+Before any new issue is activated, produce a scheduling recommendation with:
+
+- target Multica project (`P0`, `P1`, future phase) and why
+- initial status: `backlog` by default; `todo` only when CEO approves immediate execution
+- dependencies: `blocked_by`, `unblocks`, `related_to`
+- parallelization: which issues can run together, which must wait, and why
+- recommended worker tier and cost rationale
+- recommended session mode: `fresh`, `resume`, `fork`, or `force-fresh`
+- reviewer/acceptance path
+
+PM recommends; CEO approves. Do not silently start work just because an issue can be created.
+
 ## Continuity Brief Template
 
 Use this shape whenever work is reassigned or resumed:

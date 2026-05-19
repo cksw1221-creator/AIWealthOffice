@@ -32,3 +32,16 @@
 ## Current Rule
 
 Role prompt redesign moved from planning issue `AIW-23` into implementation issue `AIW-24` under `P1 - Foundation`. Keep future role-system changes in `backlog` until the CEO approves the next revision scope.
+
+
+## Parallelization Rule
+
+Each planning issue must state:
+
+- `can_parallel_with`
+- `blocked_by`
+- `recommended_worker`
+- `cost_rationale`
+- `session_mode`
+
+PM drafts this matrix. CEO approves activation.

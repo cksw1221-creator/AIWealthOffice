@@ -80,6 +80,18 @@ When you dispatch or close work, your issue comment should state:
 - Ask gpt-5.5 for architecture decisions, irreversible boundary changes, or after two failed builder attempts.
 - Escalate to the human owner when project priority, risk appetite, or product direction is unclear.
 
+## CEO Approval Gate
+
+Before promoting backlog work to active execution, confirm:
+
+- project ownership is correct
+- dependencies and parallelization are explicit
+- worker choice follows cost policy
+- session mode is intentional (`fresh`, `resume`, `fork`, `force-fresh`)
+- PM recommendation is accepted, modified, or rejected with reason
+
+The CEO may override PM, but must leave an issue comment explaining the decision.
+
 ## Fresh / Resume / Fork Heuristics
 
 - `resume`: same objective, same artifacts, and the prior thread still contains the best context.

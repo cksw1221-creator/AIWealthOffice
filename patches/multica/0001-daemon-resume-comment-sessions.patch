@@ -1,0 +1,213 @@
+From 89303f8523eeec4492ed5897539759e7a96e0762 Mon Sep 17 00:00:00 2001
+From: AIWealthOffice CEO <aiwealthoffice@example.local>
+Date: Tue, 19 May 2026 07:47:11 +0800
+Subject: [PATCH] daemon: optionally resume sessions for comment follow-ups
+
+---
+ server/internal/daemon/config.go |  43 ++++++++++---
+ server/internal/daemon/daemon.go | 106 +++++++++++++++++++++++++++++++
+ 2 files changed, 139 insertions(+), 10 deletions(-)
+
+diff --git a/server/internal/daemon/config.go b/server/internal/daemon/config.go
+index ff129d5..334052f 100644
+--- a/server/internal/daemon/config.go
++++ b/server/internal/daemon/config.go
+@@ -31,16 +31,16 @@ const (
+ 	// daemon-visible activity — see MUL-2300. 30 min keeps the safety net for
+ 	// truly stuck runs (dockerd hang) while leaving headroom for long writes.
+ 	// Set MULTICA_AGENT_IDLE_WATCHDOG=0 to disable.
+-	DefaultAgentIdleWatchdog = 30 * time.Minute
+-	DefaultRuntimeName                    = "Local Agent"
+-	DefaultWorkspaceSyncInterval          = 30 * time.Second
+-	DefaultHealthPort                     = 19514
+-	DefaultMaxConcurrentTasks             = 20
+-	DefaultGCInterval                     = 1 * time.Hour
+-	DefaultGCTTL                          = 24 * time.Hour // 1 day — AI-coding issues rarely stay open long
+-	DefaultGCOrphanTTL                    = 72 * time.Hour // 3 days — orphans with no meta (crashes, pre-GC leftovers)
+-	DefaultGCArtifactTTL                  = 12 * time.Hour // 12h — drop regenerable artifacts on completed but still-open issues
+-	DefaultAutoUpdateCheckInterval        = 6 * time.Hour  // how often the daemon polls GitHub for a newer CLI release
++	DefaultAgentIdleWatchdog       = 30 * time.Minute
++	DefaultRuntimeName             = "Local Agent"
++	DefaultWorkspaceSyncInterval   = 30 * time.Second
++	DefaultHealthPort              = 19514
++	DefaultMaxConcurrentTasks      = 20
++	DefaultGCInterval              = 1 * time.Hour
++	DefaultGCTTL                   = 24 * time.Hour // 1 day — AI-coding issues rarely stay open long
++	DefaultGCOrphanTTL             = 72 * time.Hour // 3 days — orphans with no meta (crashes, pre-GC leftovers)
++	DefaultGCArtifactTTL           = 12 * time.Hour // 12h — drop regenerable artifacts on completed but still-open issues
++	DefaultAutoUpdateCheckInterval = 6 * time.Hour  // how often the daemon polls GitHub for a newer CLI release
+ )
+ 
+ // DefaultGCArtifactPatterns lists basename matches that the GC loop treats as
+@@ -79,6 +79,7 @@ type Config struct {
+ 	AgentTimeout                   time.Duration
+ 	CodexSemanticInactivityTimeout time.Duration
+ 	AgentIdleWatchdog              time.Duration // force-stop a run when the backend goes silent this long with an empty queue (0 = disabled)
++	ResumeCommentSessions          bool          // local opt-in: infer and resume prior session for issue comment follow-ups when server omits prior_session_id
+ 	ClaudeArgs                     []string
+ 	CodexArgs                      []string
+ }
+@@ -214,6 +215,12 @@ func LoadConfig(overrides Overrides) (Config, error) {
+ 		return Config{}, err
+ 	}
+ 
++	// MULTICA_RESUME_COMMENT_SESSIONS=1 is an advanced local daemon override.
++	// Hosted Multica intentionally omits prior_session_id for issue-comment
++	// follow-ups; when this flag is set the daemon attempts to infer the prior
++	// provider session from prior_work_dir and resume it anyway.
++	resumeCommentSessions := boolFromEnv("MULTICA_RESUME_COMMENT_SESSIONS", false)
++
+ 	// Host info
+ 	host, err := os.Hostname()
+ 	if err != nil || strings.TrimSpace(host) == "" {
+@@ -409,6 +416,7 @@ func LoadConfig(overrides Overrides) (Config, error) {
+ 		AgentTimeout:                   agentTimeout,
+ 		CodexSemanticInactivityTimeout: codexSemanticInactivityTimeout,
+ 		AgentIdleWatchdog:              agentIdleWatchdog,
++		ResumeCommentSessions:          resumeCommentSessions,
+ 		ClaudeArgs:                     claudeArgs,
+ 		CodexArgs:                      codexArgs,
+ 	}, nil
+@@ -727,3 +735,18 @@ func isSafeAgentName(s string) bool {
+ 	}
+ 	return true
+ }
++
++func boolFromEnv(name string, def bool) bool {
++	raw := strings.TrimSpace(strings.ToLower(os.Getenv(name)))
++	if raw == "" {
++		return def
++	}
++	switch raw {
++	case "1", "true", "t", "yes", "y", "on":
++		return true
++	case "0", "false", "f", "no", "n", "off":
++		return false
++	default:
++		return def
++	}
++}
+diff --git a/server/internal/daemon/daemon.go b/server/internal/daemon/daemon.go
+index 689fb1f..225e645 100644
+--- a/server/internal/daemon/daemon.go
++++ b/server/internal/daemon/daemon.go
+@@ -2383,6 +2383,15 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
+ 		taskLog.Info("resuming session", "session_id", task.PriorSessionID)
+ 	}
+ 
++	if d.cfg.ResumeCommentSessions && task.TriggerCommentID != "" && task.PriorSessionID == "" && task.PriorWorkDir != "" {
++		if inferred := inferProviderSessionID(provider, env.WorkDir, taskLog); inferred != "" {
++			task.PriorSessionID = inferred
++			taskLog.Info("inferred prior session for comment follow-up", "provider", provider, "session_id", inferred)
++		} else {
++			taskLog.Warn("resume comment sessions enabled but no prior session could be inferred", "provider", provider, "workdir", env.WorkDir)
++		}
++	}
++
+ 	taskStart := time.Now()
+ 
+ 	var customArgs []string
+@@ -3165,3 +3174,100 @@ func defaultArgsForProvider(cfg Config, provider string) []string {
+ 	}
+ 	return append([]string(nil), args...)
+ }
++
++func inferProviderSessionID(provider, workDir string, logger *slog.Logger) string {
++	switch provider {
++	case "claude":
++		return inferClaudeSessionID(workDir, logger)
++	case "codex":
++		return inferCodexSessionID(workDir, logger)
++	default:
++		return ""
++	}
++}
++
++func inferClaudeSessionID(workDir string, logger *slog.Logger) string {
++	home, err := os.UserHomeDir()
++	if err != nil {
++		return ""
++	}
++	projectsRoot := filepath.Join(home, ".claude", "projects")
++	var best string
++	var bestMod time.Time
++	needle := strings.ToLower(filepath.Clean(workDir))
++	_ = filepath.WalkDir(projectsRoot, func(path string, d os.DirEntry, err error) error {
++		if err != nil || d.IsDir() || !strings.HasSuffix(strings.ToLower(d.Name()), ".jsonl") {
++			return nil
++		}
++		info, statErr := d.Info()
++		if statErr != nil || !info.ModTime().After(bestMod) {
++			return nil
++		}
++		data, readErr := os.ReadFile(path)
++		if readErr != nil {
++			return nil
++		}
++		lower := strings.ToLower(string(data))
++		if !strings.Contains(lower, needle) && !strings.Contains(lower, strings.ReplaceAll(needle, "\\", "\\\\")) {
++			return nil
++		}
++		best = strings.TrimSuffix(d.Name(), filepath.Ext(d.Name()))
++		bestMod = info.ModTime()
++		return nil
++	})
++	if best == "" && logger != nil {
++		logger.Debug("claude session inference found no match", "workdir", workDir)
++	}
++	return best
++}
++
++func inferCodexSessionID(workDir string, logger *slog.Logger) string {
++	home, err := os.UserHomeDir()
++	if err != nil {
++		return ""
++	}
++	sessionsRoot := filepath.Join(home, ".codex", "sessions")
++	needle := strings.ToLower(filepath.Clean(workDir))
++	var best string
++	var bestMod time.Time
++	_ = filepath.WalkDir(sessionsRoot, func(path string, d os.DirEntry, err error) error {
++		if err != nil || d.IsDir() || !strings.HasSuffix(strings.ToLower(d.Name()), ".jsonl") {
++			return nil
++		}
++		info, statErr := d.Info()
++		if statErr != nil || !info.ModTime().After(bestMod) {
++			return nil
++		}
++		data, readErr := os.ReadFile(path)
++		if readErr != nil {
++			return nil
++		}
++		text := string(data)
++		if !strings.Contains(strings.ToLower(text), needle) && !strings.Contains(strings.ToLower(text), strings.ReplaceAll(needle, "\\", "\\\\")) {
++			return nil
++		}
++		if id := extractJSONField(text, "id"); id != "" {
++			best = id
++			bestMod = info.ModTime()
++		}
++		return nil
++	})
++	if best == "" && logger != nil {
++		logger.Debug("codex session inference found no match", "workdir", workDir)
++	}
++	return best
++}
++
++func extractJSONField(text, field string) string {
++	needle := "\"" + field + "\":\""
++	idx := strings.Index(text, needle)
++	if idx < 0 {
++		return ""
++	}
++	start := idx + len(needle)
++	end := strings.Index(text[start:], "\"")
++	if end < 0 {
++		return ""
++	}
++	return text[start : start+end]
++}
+-- 
+2.53.0.windows.1
+

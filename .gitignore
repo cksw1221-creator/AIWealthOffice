@@ -22,6 +22,7 @@ reports/*
 !reports/.gitkeep
 !reports/quant_mvp_report.md
 !reports/environment_report.md
+!reports/qc_report.md
 workspace/*
 !workspace/.gitkeep
 !workspace/worker_registry.json

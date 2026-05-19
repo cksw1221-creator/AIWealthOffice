@@ -196,6 +196,27 @@ class MulticaClient:
     def issue_runs(self, issue_id: str) -> CommandResult:
         return self.run(["issue", "runs", issue_id, "--output", "json"])
 
+    def issue_comment_list(self, issue_id: str, *, since: str | None = None) -> CommandResult:
+        args = ["issue", "comment", "list", issue_id, "--output", "json"]
+        if since:
+            args.extend(["--since", since])
+        return self.run(args)
+
+    def issue_comment_add(
+        self,
+        issue_id: str,
+        *,
+        content_file: str | Path,
+        parent: str | None = None,
+    ) -> CommandResult:
+        args = ["issue", "comment", "add", issue_id, "--output", "json", "--content-file", str(content_file)]
+        if parent:
+            args.extend(["--parent", parent])
+        return self.run(args)
+
+    def issue_status(self, issue_id: str, status: str) -> CommandResult:
+        return self.run(["issue", "status", issue_id, status, "--output", "json"])
+
     def issue_run_messages(
         self,
         task_id: str,

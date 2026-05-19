@@ -28,6 +28,7 @@ workspace/*
 !workspace/worker_registry.json
 !workspace/current_gap_list.md
 !workspace/multica_capability_matrix.json
+!workspace/role_prompt_versions.json
 
 # Python
 __pycache__/

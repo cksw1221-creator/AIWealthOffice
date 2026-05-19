@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "bundle_id": "aiwealthoffice-role-prompts-v2",
+  "effective_date": "2026-05-19",
+  "status": "active",
+  "source_issues": [
+    "AIW-23",
+    "AIW-24"
+  ],
+  "principles": [
+    "Use Multica issues and comments as the system of record.",
+    "Keep the worker roster small; route specialist work through capabilities, not extra workers.",
+    "Prefer gpt-5.4 workers for normal throughput; use gpt-5.5 only for hard ambiguity, architecture, or repeated failure.",
+    "PM owns issue graph and continuity metadata; CEO owns the final fresh/resume/fork decision.",
+    "QA / Risk verification is separate from Secretary reporting."
+  ],
+  "files": {
+    "docs/roles/_template.md": {
+      "version": "2.0",
+      "role_type": "shared_template"
+    },
+    "docs/roles/ceo.md": {
+      "version": "2.0",
+      "role_type": "executive"
+    },
+    "docs/roles/pm.md": {
+      "version": "2.0",
+      "role_type": "coordination"
+    },
+    "docs/roles/coder.md": {
+      "version": "2.0",
+      "role_type": "execution"
+    },
+    "docs/roles/investment_analyst.md": {
+      "version": "2.0",
+      "role_type": "research"
+    },
+    "docs/roles/secretary.md": {
+      "version": "2.0",
+      "role_type": "reporting"
+    },
+    "docs/roles/qa_risk_reviewer.md": {
+      "version": "1.0",
+      "role_type": "verification"
+    },
+    "docs/protocols/coder_collaboration.md": {
+      "version": "1.0",
+      "role_type": "protocol"
+    }
+  }
+}

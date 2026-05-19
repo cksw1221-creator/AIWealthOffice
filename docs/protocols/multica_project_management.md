@@ -31,4 +31,4 @@
 
 ## Current Rule
 
-Role prompt redesign is complex and starts as backlog issue `AIW-23` under `P1 - Foundation`; do not implement until the consultant proposal is reviewed.
+Role prompt redesign moved from planning issue `AIW-23` into implementation issue `AIW-24` under `P1 - Foundation`. Keep future role-system changes in `backlog` until the CEO approves the next revision scope.

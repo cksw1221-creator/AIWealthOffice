@@ -13,17 +13,11 @@
 - [x] QC runner created; latest QC is 7/7 PASS.
 - [x] Demo 001 formalized.
 - [x] Role prompt first draft created.
+- [x] Role prompt v2, coder collaboration protocol, and prompt version manifest created.
 - [x] Multica same-issue resume tested for Claude Code and Codex.
 - [x] P0/P1 Multica projects created and historical issues linked.
 
 ## Open Gaps / Backlog
-
-### Role System v2
-- [ ] Existing role prompts are too shallow.
-- [ ] Redesign roles using selective ideas from `msitarzewski/agency-agents`.
-- [ ] Define Coder collaboration model for current 4-Coder team.
-- [ ] Define PM context/session-continuity responsibilities vs CEO final decision rights.
-- Multica backlog issue: AIW-23.
 
 ### Session Continuity Productization
 - [ ] Expose `fresh/resume/fork/force-fresh` choice in CEO scripts.

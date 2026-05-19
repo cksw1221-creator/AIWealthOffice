@@ -1,0 +1,61 @@
+{
+  "issues": {
+    "issue-123": {
+      "issue_id": "issue-123",
+      "issue_key": "AIW-123",
+      "title": "Implement CEO flow",
+      "worker": {
+        "name": "Coder-gpt-5.4-high-Builder",
+        "agent_id": "agent-123",
+        "role": "Coder"
+      },
+      "dispatch": {
+        "priority": "high",
+        "status": "todo"
+      },
+      "continuity": {
+        "recommended_mode": "resume",
+        "last_action": "dispatch"
+      }
+    },
+    "AIW-4": {
+      "issue_id": "AIW-4",
+      "issue_key": "AIW-4",
+      "title": "AIW-4",
+      "review": {
+        "status": "todo",
+        "comment_preview": "Please tighten the docs."
+      },
+      "continuity": {
+        "recommended_mode": "force-fresh",
+        "last_action": "review"
+      }
+    },
+    "AIW-26": {
+      "issue_id": "AIW-26",
+      "issue_key": "AIW-26",
+      "title": "AIW-26",
+      "review": {
+        "status": "done",
+        "comment_preview": "Accepted. Session continuity is now productized: CEO scripts expose session modes, local continuity metadata is persisted, docs/examples are in place, and QC remains green."
+      },
+      "continuity": {
+        "recommended_mode": "resume",
+        "last_action": "review"
+      }
+    },
+    "AIW-27": {
+      "issue_id": "AIW-27",
+      "issue_key": "AIW-27",
+      "title": "AIW-27",
+      "review": {
+        "status": "done",
+        "comment_preview": "Accepted. Sprint/project workflow is now documented and indexed locally: project metadata, backlog-to-done lifecycle, experiment exclusion, and PM/CEO activation policy are all in place, with QC preserved."
+      },
+      "continuity": {
+        "recommended_mode": "resume",
+        "last_action": "review"
+      }
+    }
+  }
+}

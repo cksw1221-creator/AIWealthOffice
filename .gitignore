@@ -30,6 +30,7 @@ workspace/*
 !workspace/current_gap_list.md
 !workspace/multica_capability_matrix.json
 !workspace/role_prompt_versions.json
+!workspace/session_continuity.json
 
 # Python
 __pycache__/

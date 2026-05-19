@@ -20,14 +20,14 @@
 ## Open Gaps / Backlog
 
 ### Session Continuity Productization
-- [ ] Expose `fresh/resume/fork/force-fresh` choice in CEO scripts.
-- [ ] Persist issue continuity metadata locally and/or in Multica project/issue descriptions.
-- [ ] Document operational policy for when to resume vs start fresh.
+- [x] Expose `fresh/resume/fork/force-fresh` choice in CEO scripts.
+- [x] Persist issue continuity metadata locally and/or in Multica project/issue descriptions.
+- [x] Document operational policy for when to resume vs start fresh.
 
 ### Multica Project Management
-- [ ] Use Multica projects as sprint containers: P0, P1, P2, etc.
-- [ ] Create new work as `backlog` first, then promote to `todo/in_progress` when CEO selects it.
-- [ ] Keep experiments done/cancelled so they do not pollute active planning.
+- [x] Use Multica projects as sprint containers: P0, P1, P2, etc.
+- [x] Create new work as `backlog` first, then promote to `todo/in_progress` when CEO selects it.
+- [x] Keep experiments done/cancelled so they do not pollute active planning.
 
 ### Strategy Work
 - [ ] Do not start more strategy demos until Role System v2 and continuity workflow are clarified.

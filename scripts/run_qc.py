@@ -37,6 +37,7 @@ REQUIRED_P0_FILES = (
     REPO_ROOT / "workspace" / "worker_registry.json",
     REPO_ROOT / "workspace" / "multica_capability_matrix.json",
     REPO_ROOT / "workspace" / "current_gap_list.md",
+    REPO_ROOT / "workspace" / "session_continuity.json",
 )
 
 KEY_DELIVERABLES = (
@@ -48,6 +49,7 @@ KEY_DELIVERABLES = (
     REPO_ROOT / "workspace" / "worker_registry.json",
     REPO_ROOT / "workspace" / "multica_capability_matrix.json",
     REPO_ROOT / "workspace" / "current_gap_list.md",
+    REPO_ROOT / "workspace" / "session_continuity.json",
 )
 
 
@@ -90,7 +92,7 @@ def check_python_compile() -> CheckResult:
 
 
 def check_unit_tests() -> CheckResult:
-    command = [PYTHON, "-m", "unittest", "wealth_office_quant.tests.test_quant_mvp"]
+    command = [PYTHON, "-m", "unittest", "wealth_office_quant.tests.test_quant_mvp", "tests.test_ceo_workflow"]
     completed = subprocess.run(
         command,
         cwd=REPO_ROOT,
@@ -99,7 +101,7 @@ def check_unit_tests() -> CheckResult:
         timeout=120,
     )
     if completed.returncode == 0:
-        return CheckResult("Unit tests", True, "wealth_office_quant tests passed.")
+        return CheckResult("Unit tests", True, "wealth_office_quant and CEO workflow tests passed.")
     return CheckResult("Unit tests", False, summarize_subprocess(completed))
 
 

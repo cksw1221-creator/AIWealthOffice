@@ -10,7 +10,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from ga_multica import MulticaClient, dispatch_issue
-from ga_multica.ceo import DEFAULT_REGISTRY_PATH, read_text_input
+from ga_multica.ceo import DEFAULT_CONTINUITY_PATH, DEFAULT_REGISTRY_PATH, SESSION_MODES, read_text_input
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -22,6 +22,17 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--description-stdin", action="store_true", help="Read issue description from stdin.")
     parser.add_argument("--priority", default="high", help="Issue priority.")
     parser.add_argument("--status", default="todo", help="Initial issue status.")
+    parser.add_argument(
+        "--session-mode",
+        choices=SESSION_MODES,
+        default="fresh",
+        help="Session continuity mode for the worker: fresh, resume, fork, or force-fresh.",
+    )
+    parser.add_argument(
+        "--continuity-file",
+        default=str(DEFAULT_CONTINUITY_PATH),
+        help="Path to local continuity metadata JSON.",
+    )
     parser.add_argument(
         "--registry",
         default=str(DEFAULT_REGISTRY_PATH),
@@ -44,10 +55,21 @@ def main(argv: list[str] | None = None) -> int:
         description=description,
         worker_ref=args.worker,
         registry_path=args.registry,
+        continuity_path=args.continuity_file,
         priority=args.priority,
         status=args.status,
+        session_mode=args.session_mode,
     )
-    print(json.dumps({"id": result.get("id"), "identifier": result.get("identifier")}, ensure_ascii=False))
+    print(
+        json.dumps(
+            {
+                "id": result.get("id"),
+                "identifier": result.get("identifier"),
+                "session_mode": result.get("session_mode"),
+            },
+            ensure_ascii=False,
+        )
+    )
     return 0
 
 

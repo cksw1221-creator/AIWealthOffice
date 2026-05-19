@@ -10,7 +10,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from ga_multica import MulticaClient, review_issue
-from ga_multica.ceo import read_text_input
+from ga_multica.ceo import DEFAULT_CONTINUITY_PATH, SESSION_MODES, read_text_input
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -20,6 +20,17 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--comment-file", help="Read CEO acceptance comment from a UTF-8 file.")
     parser.add_argument("--comment-stdin", action="store_true", help="Read CEO acceptance comment from stdin.")
     parser.add_argument("--status", default="done", help="Status to set after approval.")
+    parser.add_argument(
+        "--session-mode",
+        choices=SESSION_MODES,
+        default="resume",
+        help="Session continuity mode to record for the close-out: fresh, resume, fork, or force-fresh.",
+    )
+    parser.add_argument(
+        "--continuity-file",
+        default=str(DEFAULT_CONTINUITY_PATH),
+        help="Path to local continuity metadata JSON.",
+    )
     return parser
 
 
@@ -30,7 +41,14 @@ def main(argv: list[str] | None = None) -> int:
         file_path=args.comment_file,
         use_stdin=args.comment_stdin,
     )
-    result = review_issue(MulticaClient(), issue_id=args.issue, comment=comment, status=args.status)
+    result = review_issue(
+        MulticaClient(),
+        issue_id=args.issue,
+        comment=comment,
+        status=args.status,
+        continuity_path=args.continuity_file,
+        session_mode=args.session_mode,
+    )
     print(json.dumps(result, ensure_ascii=False))
     return 0
 

@@ -17,6 +17,7 @@ python scripts/ceo_dispatch.py `
   --title "Implement portfolio analytics export" `
   --worker "Coder-gpt-5.4-medium-Builder" `
   --description "Build CSV export for portfolio analytics. Keep quant MVP intact." `
+  --session-mode fresh `
   --priority high `
   --status todo
 ```
@@ -27,13 +28,14 @@ Create a new issue from a markdown file:
 python scripts/ceo_dispatch.py `
   --title "Refine task lifecycle docs" `
   --worker "a29c8d6f-fa67-4047-bcf2-93ef4bbd1412" `
-  --description-file docs/templates/issue_coder_task.md
+  --description-file docs/templates/issue_coder_task.md `
+  --session-mode resume
 ```
 
 Expected output:
 
 ```json
-{"id":"<issue-uuid>","identifier":"AIW-123"}
+{"id":"<issue-uuid>","identifier":"AIW-123","session_mode":"resume"}
 ```
 
 ## Watch Progress
@@ -62,7 +64,8 @@ Approve and close an issue:
 
 ```powershell
 python scripts/ceo_accept.py AIW-123 `
-  --comment "Accepted. Ship this and move to the next sprint item."
+  --comment "Accepted. Ship this and move to the next sprint item." `
+  --session-mode resume
 ```
 
 This posts a CEO comment through `--content-file` and then sets the status to `done` by default.
@@ -74,10 +77,26 @@ Send the worker back for another pass:
 ```powershell
 python scripts/ceo_rework.py AIW-123 `
   --comment "Rework required: tighten the error handling section and add usage examples." `
+  --session-mode force-fresh `
   --status todo
 ```
 
 Default rework status is `todo` so the issue remains actionable. You can change it to another open state if your workspace uses a different status convention.
+
+## Session Continuity
+
+The CEO scripts now expose an explicit continuity policy:
+
+- `--session-mode fresh`
+- `--session-mode resume`
+- `--session-mode fork`
+- `--session-mode force-fresh`
+
+Dispatch defaults to `fresh`. Accept and rework default to `resume` because they usually operate on an existing issue thread.
+
+Continuity decisions are persisted to `workspace/session_continuity.json` by default. Override the path with `--continuity-file` when testing or when maintaining a separate local workspace state.
+
+For operating guidance on when to pick each mode, see `docs/protocols/session_continuity.md`.
 
 ## Notes
 

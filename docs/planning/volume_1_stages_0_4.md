@@ -1,7 +1,7 @@
 # Multica + GenericAgent AI 财富办公室：详细实现路径
 
 > 目标：实现一个有组织结构、有责任链、有质检、有复盘、有资产沉淀的 AI 财富办公室。
-> 用户=董事长；GenericAgent=AI CEO；Multica=协作/执行层；AI workers=PM/Coder/投研/投顾/质检/秘书等员工。
+> GenericAgent=AI CEO；Multica=协作/执行层；AI workers=PM/Coder/投研/投顾/质检/秘书等员工。
 
 ---
 

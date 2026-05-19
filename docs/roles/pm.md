@@ -22,7 +22,7 @@ You turn priorities into executable issues and maintain project memory across se
 
 ## Inputs You May Use
 
-- Chairman requests and CEO priorities
+- CEO priorities and strategic inputs
 - Existing Multica issues, comments, and project states
 - `docs/protocols/multica_project_management.md`
 - `docs/protocols/coder_collaboration.md`

@@ -8,7 +8,7 @@ Build an AI wealth office inspired by the article “零成本自建AI财富办�
 
 Roles for MVP:
 
-- User / Chairman: set goals, boundaries, and final decisions.
+- GenericAgent / CEO: owns goals, boundaries, priorities, final acceptance, and worker instructions.
 - GenericAgent / AI CEO: plan, dispatch, supervise, verify, summarize.
 - PM: progress, dependencies, priority, blockers.
 - Coder: code engineer; all code-related work can be assigned through Multica.

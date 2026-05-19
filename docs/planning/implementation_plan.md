@@ -1,7 +1,7 @@
 # Multica + GenericAgent AI 财富办公室：详细实现路径
 
 > 目标：实现一个有组织结构、有责任链、有质检、有复盘、有资产沉淀的 AI 财富办公室。
-> 用户=董事长；GenericAgent=AI CEO；Multica=协作/执行层；AI workers=PM/Coder/投资分析师/秘书等员工。
+> GenericAgent=AI CEO；Multica=协作/执行层；AI workers=PM/Coder/投资分析师/秘书等员工。
 
 ---
 
@@ -758,7 +758,7 @@ S3 / S4 / S6 / S7_INTERNAL
 ### 决策包结构
 
 ```markdown
-# 董事长决策包
+# CEO决策包
 
 ## 1. 结论先行
 本轮最值得继续研究的是：
@@ -781,7 +781,7 @@ B. 推回聚宽验证
 C. 扩展数据Skill
 D. 放弃某些策略
 
-## 5. 需要董事长拍板的问题
+## 5. 需要CEO拍板的问题
 ```
 
 ### 产出
@@ -796,7 +796,7 @@ templates/
 
 ### 验收标准
 
-董事长无需看日志即可知道：
+CEO无需看日志即可知道：
 
 ```text
 结论是什么
@@ -1278,7 +1278,7 @@ A股量化是第一业务场景，但组织能力可以迁移。
 ### 不变结构
 
 ```text
-董事长
+CEO
 → CEO
 → Multica
 → AI 员工

@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Demo registry for AI Wealth Office",
+  "demos": {
+    "demo_001_moving_average": {
+      "id": "demo_001_moving_average",
+      "title": "Moving Average Crossover",
+      "script": "scripts/run_quant_mvp.py",
+      "artifacts": {
+        "equity_curve": "artifacts/quant_mvp/equity_curve.csv",
+        "trades": "artifacts/quant_mvp/trades.csv"
+      },
+      "report": "reports/quant_mvp_report.md",
+      "status": "offline_safe"
+    },
+    "demo_002_research_memo": {
+      "id": "demo_002_research_memo",
+      "title": "Standardize short single-question memo workflow",
+      "artifacts": {
+        "memo": "reports/demo_002_research_memo.md",
+        "handoff": "reports/aiw_30_deliverable_handoff.md",
+        "acceptance_precheck": "reports/aiw_30_acceptance_precheck.md"
+      },
+      "report": "reports/demo_002_research_memo.md",
+      "status": "offline_safe_first_pass",
+      "accepted_date": "2026-05-20",
+      "research_question": "Should AI Wealth Office standardize Demo 002 as a short, single-question research memo workflow before attempting broader multi-step strategy demos?"
+    }
+  }
+}

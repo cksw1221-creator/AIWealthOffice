@@ -31,6 +31,12 @@ workspace/*
 !workspace/multica_capability_matrix.json
 !workspace/role_prompt_versions.json
 !workspace/session_continuity.json
+!workspace/closure_manifest.json
+!workspace/closure_sync_rules.json
+!workspace/demo_registry.json
+!workspace/p2_backlog_issues.md
+!workspace/p2_issue_descriptions/
+!workspace/p2_issue_descriptions/**
 
 # Python
 __pycache__/

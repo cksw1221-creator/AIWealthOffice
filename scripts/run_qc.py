@@ -37,6 +37,7 @@ REQUIRED_P0_FILES = (
     REPO_ROOT / "workspace" / "worker_registry.json",
     REPO_ROOT / "workspace" / "multica_capability_matrix.json",
     REPO_ROOT / "workspace" / "current_gap_list.md",
+    REPO_ROOT / "workspace" / "closure_manifest.json",
     REPO_ROOT / "workspace" / "session_continuity.json",
 )
 
@@ -49,9 +50,18 @@ KEY_DELIVERABLES = (
     REPO_ROOT / "workspace" / "worker_registry.json",
     REPO_ROOT / "workspace" / "multica_capability_matrix.json",
     REPO_ROOT / "workspace" / "current_gap_list.md",
+    REPO_ROOT / "workspace" / "closure_manifest.json",
     REPO_ROOT / "workspace" / "session_continuity.json",
 )
 
+REQUIRED_WORKFLOW_FILES = (
+    REPO_ROOT / "docs" / "protocols" / "ceo_workflow.md",
+    REPO_ROOT / "docs" / "protocols" / "ceo_review_rubric.md",
+    REPO_ROOT / "docs" / "templates" / "issue_contract.md",
+    REPO_ROOT / "docs" / "templates" / "acceptance_checklist.md",
+    REPO_ROOT / "docs" / "templates" / "rework_note.md",
+    REPO_ROOT / "docs" / "templates" / "deliverable_handoff.md",
+)
 
 @dataclass
 class CheckResult:
@@ -66,6 +76,8 @@ def main() -> int:
         check_unit_tests(),
         check_quant_runner(),
         check_required_files(),
+        check_workflow_protocol_files(),
+        check_demo_registry_references(),
         check_json_files(),
         check_pycache_ignored(),
         check_deliverables_not_ignored(),
@@ -128,6 +140,45 @@ def check_required_files() -> CheckResult:
     return CheckResult("Required P0 files", False, "Missing: " + ", ".join(missing))
 
 
+def check_workflow_protocol_files() -> CheckResult:
+    missing = [path.relative_to(REPO_ROOT).as_posix() for path in REQUIRED_WORKFLOW_FILES if not path.exists()]
+    if missing:
+        return CheckResult("Workflow protocol files", False, "Missing: " + ", ".join(missing))
+    verified = ", ".join(path.relative_to(REPO_ROOT).as_posix() for path in REQUIRED_WORKFLOW_FILES)
+    return CheckResult("Workflow protocol files", True, f"Verified: {verified}")
+
+
+def check_demo_registry_references() -> CheckResult:
+    demo_registry_path = repo_path("workspace", "demo_registry.json")
+    if not demo_registry_path.exists():
+        return CheckResult(
+            "Demo registry references",
+            False,
+            f"Missing: {demo_registry_path.relative_to(REPO_ROOT).as_posix()}",
+        )
+
+    try:
+        registry = json.loads(demo_registry_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        return CheckResult(
+            "Demo registry references",
+            False,
+            (
+                f"{demo_registry_path.relative_to(REPO_ROOT).as_posix()}: "
+                f"{exc.msg} at line {exc.lineno}"
+            ),
+        )
+
+    missing_refs: list[str] = []
+    demos = registry.get("demos", {})
+    for demo_id, record in demos.items():
+        missing_refs.extend(find_missing_demo_refs(demo_registry_path, demo_id, record))
+
+    if missing_refs:
+        return CheckResult("Demo registry references", False, "; ".join(missing_refs))
+    return CheckResult("Demo registry references", True, f"Validated {len(demos)} demo registry entries.")
+
+
 def check_json_files() -> CheckResult:
     json_files = sorted(REPO_ROOT.rglob("*.json"))
     failures: list[str] = []
@@ -139,6 +190,39 @@ def check_json_files() -> CheckResult:
     if not failures:
         return CheckResult("JSON parse", True, f"Parsed {len(json_files)} JSON files.")
     return CheckResult("JSON parse", False, "; ".join(failures))
+
+
+def find_missing_demo_refs(demo_registry_path: Path, demo_id: str, record: object) -> list[str]:
+    if not isinstance(record, dict):
+        return [f"{demo_registry_path.relative_to(REPO_ROOT).as_posix()}: demo '{demo_id}' is not an object"]
+
+    refs: list[tuple[str, str]] = []
+    for key in ("script", "report"):
+        value = record.get(key)
+        if isinstance(value, str) and value:
+            refs.append((key, value))
+
+    artifacts = record.get("artifacts", {})
+    if isinstance(artifacts, dict):
+        for artifact_name, artifact_path in artifacts.items():
+            if isinstance(artifact_path, str) and artifact_path:
+                refs.append((f"artifacts.{artifact_name}", artifact_path))
+
+    missing_refs: list[str] = []
+    for field_name, relative_path in refs:
+        candidate = REPO_ROOT / Path(relative_path)
+        if not candidate.exists():
+            missing_refs.append(
+                (
+                    f"{demo_registry_path.relative_to(REPO_ROOT).as_posix()}: "
+                    f"demo '{demo_id}' field '{field_name}' missing '{relative_path}'"
+                )
+            )
+    return missing_refs
+
+
+def repo_path(*parts: str) -> Path:
+    return REPO_ROOT.joinpath(*parts)
 
 
 def check_pycache_ignored() -> CheckResult:

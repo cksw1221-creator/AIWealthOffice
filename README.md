@@ -28,10 +28,17 @@ Roles for MVP:
 - `docs/planning/volume_1_stages_0_4.md` - stage 0-4 plan.
 - `docs/planning/volume_2_stages_5_8.md` - stage 5-8 plan.
 - `docs/planning/volume_3_stages_9_14.md` - stage 9-14 plan.
+- `docs/planning/p3_startup_plan.md` - P3 startup rules, backlog discipline, PM-A operationalization, and Multica-first numbering plan.
 - `docs/diagrams/ai_wealth_office_panorama.excalidraw` - Excalidraw panorama.
 - `docs/protocols/ceo_workflow.md` - CEO dispatch, watch, accept, and rework control loop.
 - `docs/protocols/session_continuity.md` - continuity policy and local metadata contract.
+- `docs/protocols/role_system_v2.md` - role boundary, session-mode authority, and acceptance ownership contract.
+- `docs/protocols/closure_checklist.md` - five-layer closure checklist for issue, planning, metadata, execution, and verification sync.
 - `docs/protocols/sprint_workflow.md` - backlog/sprint/project lifecycle policy for Multica.
+- `docs/templates/issue_contract.md` - PM issue preparation template.
+- `docs/templates/acceptance_checklist.md` - CEO/reviewer acceptance gate template.
+- `docs/templates/rework_note.md` - CEO rework instruction template.
+- `docs/templates/deliverable_handoff.md` - worker/reviewer/secretary handoff template.
 - `workspace/project_sprint_metadata.json` - local index of active sprint/project IDs and workflow policy.
 
 ## Session Continuity
@@ -45,6 +52,8 @@ python scripts/ceo_accept.py --help
 ```
 
 Use `--session-mode fresh|resume|fork|force-fresh` to record the intended execution policy. Local continuity metadata is persisted to `workspace/session_continuity.json`.
+
+Role ownership for continuity recommendations, final session-mode choice, and accept/rework authority is defined in `docs/protocols/role_system_v2.md`.
 
 ## Local Project Status
 

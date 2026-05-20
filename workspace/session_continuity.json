@@ -56,6 +56,93 @@
         "recommended_mode": "resume",
         "last_action": "review"
       }
+    },
+    "7c617cbc-6b38-44c0-aeef-0f0e3696f6ff": {
+      "issue_id": "7c617cbc-6b38-44c0-aeef-0f0e3696f6ff",
+      "issue_key": "7c617cbc-6b38-44c0-aeef-0f0e3696f6ff",
+      "title": "Demo 002 end-to-end research memo execution",
+      "worker": {
+        "name": "Investment-Analyst-A",
+        "agent_id": "a1dfad19-7f22-440b-a748-5fe6c1fe0fb0",
+        "role": "Investment Analyst"
+      },
+      "dispatch": {
+        "priority": "high",
+        "status": "todo"
+      },
+      "continuity": {
+        "recommended_mode": "resume",
+        "last_action": "review"
+      },
+      "review": {
+        "status": "done",
+        "comment_preview": "Accepted as first-pass Demo 002 execution. The memo satisfies the current contract: objective, question, thesis, evidence limits, risk language, and bounded conclusion are present. No live or external evidence is falsely implied. Demo 002 has been registered locally as an offline_safe_first_pass artifact set. Next step: use this accepted first pass as the baseline for later, more market-specific memo iterations if needed."
+      }
+    },
+    "530fe4f1-6771-46c7-8fab-f13bd6a1cd6f": {
+      "issue_id": "530fe4f1-6771-46c7-8fab-f13bd6a1cd6f",
+      "issue_key": "530fe4f1-6771-46c7-8fab-f13bd6a1cd6f",
+      "title": "530fe4f1-6771-46c7-8fab-f13bd6a1cd6f",
+      "review": {
+        "status": "done",
+        "comment_preview": "Accepted. CEO review rubric and deterministic workflow QC expansion are complete. Artifacts, tests, and QC evidence are explicit, and the result is reusable for future accept/rework decisions."
+      },
+      "continuity": {
+        "recommended_mode": "resume",
+        "last_action": "review"
+      }
+    },
+    "c297390d-a3b5-4932-b2b3-1cbfc6b11727": {
+      "issue_id": "c297390d-a3b5-4932-b2b3-1cbfc6b11727",
+      "issue_key": "c297390d-a3b5-4932-b2b3-1cbfc6b11727",
+      "title": "c297390d-a3b5-4932-b2b3-1cbfc6b11727",
+      "review": {
+        "status": "done",
+        "comment_preview": "Accepted. P2 sprint metadata and backlog inventory are updated to reflect the real project state, activation order, and current entry issue. The result improves operability for future P2 work."
+      },
+      "continuity": {
+        "recommended_mode": "resume",
+        "last_action": "review"
+      }
+    },
+    "b200890a-4423-4e06-b961-17d734f9e1bd": {
+      "issue_id": "b200890a-4423-4e06-b961-17d734f9e1bd",
+      "issue_key": "b200890a-4423-4e06-b961-17d734f9e1bd",
+      "title": "b200890a-4423-4e06-b961-17d734f9e1bd",
+      "review": {
+        "status": "done",
+        "comment_preview": "Accepted. PM-A proved the core P3 coordination loop: backlog hygiene, continuity handling, next-issue recommendation, and project-state awareness are explicit in the issue thread. Residual work now moves to execution of the remaining P3 backlog, not PM role definition."
+      },
+      "continuity": {
+        "recommended_mode": "resume",
+        "last_action": "review"
+      }
+    },
+    "d60922b3-5977-484b-8307-58decfb8aa62": {
+      "issue_id": "d60922b3-5977-484b-8307-58decfb8aa62",
+      "issue_key": "d60922b3-5977-484b-8307-58decfb8aa62",
+      "title": "d60922b3-5977-484b-8307-58decfb8aa62",
+      "review": {
+        "status": "done",
+        "comment_preview": "Accepted. The next content-path brief is specific enough to activate a new substantive cycle: chosen subject line, explicit reviewer path, and fork recommendation are all present. Residual choice is execution sequencing, not contract clarity."
+      },
+      "continuity": {
+        "recommended_mode": "resume",
+        "last_action": "review"
+      }
+    },
+    "d09f0715-04f5-4faf-9ef2-848b684a597d": {
+      "issue_id": "d09f0715-04f5-4faf-9ef2-848b684a597d",
+      "issue_key": "d09f0715-04f5-4faf-9ef2-848b684a597d",
+      "title": "d09f0715-04f5-4faf-9ef2-848b684a597d",
+      "review": {
+        "status": "done",
+        "comment_preview": "Accepted. Local closure automation is now hardened: accepted reviews can deterministically update repo-local registry and metadata files through the closure manifest path, QC covers the tracked deliverables, and the guardrail remains local-only rather than mutating remote project state. This closes the P3 automation hardening objective."
+      },
+      "continuity": {
+        "recommended_mode": "resume",
+        "last_action": "review"
+      }
     }
   }
 }

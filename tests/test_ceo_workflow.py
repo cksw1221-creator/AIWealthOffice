@@ -8,6 +8,7 @@ from pathlib import Path
 from ga_multica.models import CommandResult
 
 from ga_multica.ceo import (
+    DEFAULT_CLOSURE_MANIFEST_PATH,
     DEFAULT_CONTINUITY_PATH,
     dispatch_issue,
     load_session_continuity,
@@ -16,7 +17,7 @@ from ga_multica.ceo import (
     review_issue,
 )
 from ga_multica.polling import format_issue_summary, poll_issue
-from scripts import ceo_dispatch, ceo_rework
+from scripts import ceo_accept, ceo_dispatch, ceo_rework
 
 
 def command_result(payload: object) -> CommandResult:
@@ -249,6 +250,158 @@ class DispatchAndReviewTests(unittest.TestCase):
         self.assertEqual(issue_entry["review"]["status"], "todo")
         self.assertEqual(issue_entry["review"]["comment_preview"], "Please tighten the docs.")
 
+    def test_review_issue_applies_acceptance_closure_updates_from_manifest(self) -> None:
+        client = FakeDispatchClient()
+        with tempfile.TemporaryDirectory() as temp_dir:
+            repo_root = Path(temp_dir)
+            continuity_path = repo_root / "workspace" / "session_continuity.json"
+            manifest_path = repo_root / "workspace" / "closure_manifest.json"
+            continuity_path.parent.mkdir(parents=True, exist_ok=True)
+            continuity_path.write_text(
+                json.dumps(
+                    {
+                        "issues": {
+                            "AIW-30": {
+                                "issue_id": "AIW-30",
+                                "issue_key": "AIW-30",
+                                "title": "Demo 002 end-to-end research memo execution",
+                            }
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            (repo_root / "workspace" / "demo_registry.json").write_text(
+                json.dumps({"demos": {}}, indent=2),
+                encoding="utf-8",
+            )
+            (repo_root / "workspace" / "project_sprint_metadata.json").write_text(
+                json.dumps(
+                    {
+                        "projects": {
+                            "P2 - Execution Quality": {
+                                "current_entry_issue": "AIW-30",
+                                "notes": "AIW-30 is the current task."
+                            }
+                        }
+                    },
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
+            (repo_root / "workspace" / "current_gap_list.md").write_text(
+                "# Current Gap List\n\n- [ ] AIW-30 pending acceptance\n",
+                encoding="utf-8",
+            )
+            manifest_path.write_text(
+                json.dumps(
+                    {
+                        "issues": {
+                            "AIW-30": {
+                                "apply_on_status": ["done"],
+                                "demo_registry_updates": {
+                                    "demo_002_research_memo": {
+                                        "id": "demo_002_research_memo",
+                                        "title": "Standardize short single-question memo workflow",
+                                        "report": "reports/demo_002_research_memo.md",
+                                        "status": "accepted"
+                                    }
+                                },
+                                "project_metadata_updates": [
+                                    {
+                                        "project": "P2 - Execution Quality",
+                                        "current_entry_issue": "AIW-31",
+                                        "append_notes": "AIW-30 accepted 2026-05-20."
+                                    }
+                                ],
+                                "gap_list_updates": [
+                                    {
+                                        "search": "- [ ] AIW-30 pending acceptance",
+                                        "replace": "- [x] AIW-30 accepted and closed"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
+
+            result = review_issue(
+                client,
+                issue_id="AIW-30",
+                comment="Accepted for closure.",
+                status="done",
+                continuity_path=continuity_path,
+                session_mode="resume",
+                repo_root=repo_root,
+                closure_manifest_path=manifest_path,
+            )
+
+            stored = load_session_continuity(continuity_path)
+            registry = json.loads((repo_root / "workspace" / "demo_registry.json").read_text(encoding="utf-8"))
+            project_metadata = json.loads(
+                (repo_root / "workspace" / "project_sprint_metadata.json").read_text(encoding="utf-8")
+            )
+            gap_list = (repo_root / "workspace" / "current_gap_list.md").read_text(encoding="utf-8")
+
+        self.assertEqual(result["status"]["status"], "done")
+        self.assertEqual(stored["issues"]["AIW-30"]["review"]["status"], "done")
+        self.assertEqual(
+            registry["demos"]["demo_002_research_memo"]["accepted_issue"],
+            "AIW-30",
+        )
+        self.assertEqual(
+            project_metadata["projects"]["P2 - Execution Quality"]["current_entry_issue"],
+            "AIW-31",
+        )
+        self.assertIn("AIW-30 accepted 2026-05-20.", project_metadata["projects"]["P2 - Execution Quality"]["notes"])
+        self.assertIn("- [x] AIW-30 accepted and closed", gap_list)
+
+    def test_review_issue_skips_closure_updates_when_status_not_accepted(self) -> None:
+        client = FakeDispatchClient()
+        with tempfile.TemporaryDirectory() as temp_dir:
+            repo_root = Path(temp_dir)
+            continuity_path = repo_root / "workspace" / "session_continuity.json"
+            manifest_path = repo_root / "workspace" / "closure_manifest.json"
+            continuity_path.parent.mkdir(parents=True, exist_ok=True)
+            continuity_path.write_text(json.dumps({"issues": {"AIW-30": {}}}), encoding="utf-8")
+            registry_path = repo_root / "workspace" / "demo_registry.json"
+            registry_path.write_text(json.dumps({"demos": {}}, indent=2), encoding="utf-8")
+            manifest_path.write_text(
+                json.dumps(
+                    {
+                        "issues": {
+                            "AIW-30": {
+                                "apply_on_status": ["done"],
+                                "demo_registry_updates": {
+                                    "demo_002_research_memo": {"status": "accepted"}
+                                }
+                            }
+                        }
+                    },
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
+
+            review_issue(
+                client,
+                issue_id="AIW-30",
+                comment="Needs rework.",
+                status="in_review",
+                continuity_path=continuity_path,
+                session_mode="resume",
+                repo_root=repo_root,
+                closure_manifest_path=manifest_path,
+            )
+
+            registry = json.loads(registry_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(registry["demos"], {})
+
 
 class SessionContinuityParserTests(unittest.TestCase):
     def test_dispatch_parser_defaults_and_accepts_session_mode(self) -> None:
@@ -271,6 +424,12 @@ class SessionContinuityParserTests(unittest.TestCase):
             ]
         )
         self.assertEqual(resumed.session_mode, "resume")
+
+    def test_accept_parser_defaults_closure_manifest(self) -> None:
+        args = ceo_accept.build_parser().parse_args(["AIW-4", "--comment", "Accepted."])
+        self.assertEqual(args.session_mode, "resume")
+        self.assertEqual(args.continuity_file, str(DEFAULT_CONTINUITY_PATH))
+        self.assertEqual(args.closure_manifest, str(DEFAULT_CLOSURE_MANIFEST_PATH))
 
     def test_rework_parser_accepts_force_fresh(self) -> None:
         args = ceo_rework.build_parser().parse_args(

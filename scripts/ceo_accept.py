@@ -10,7 +10,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from ga_multica import MulticaClient, review_issue
-from ga_multica.ceo import DEFAULT_CONTINUITY_PATH, SESSION_MODES, read_text_input
+from ga_multica.ceo import DEFAULT_CLOSURE_MANIFEST_PATH, DEFAULT_CONTINUITY_PATH, SESSION_MODES, read_text_input
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -31,6 +31,11 @@ def build_parser() -> argparse.ArgumentParser:
         default=str(DEFAULT_CONTINUITY_PATH),
         help="Path to local continuity metadata JSON.",
     )
+    parser.add_argument(
+        "--closure-manifest",
+        default=str(DEFAULT_CLOSURE_MANIFEST_PATH),
+        help="Path to repo-local closure update manifest JSON.",
+    )
     return parser
 
 
@@ -48,6 +53,8 @@ def main(argv: list[str] | None = None) -> int:
         status=args.status,
         continuity_path=args.continuity_file,
         session_mode=args.session_mode,
+        repo_root=ROOT,
+        closure_manifest_path=args.closure_manifest,
     )
     print(json.dumps(result, ensure_ascii=False))
     return 0

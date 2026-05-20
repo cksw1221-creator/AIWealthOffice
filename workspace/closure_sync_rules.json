@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Deterministic local closure sync rules for accepted AI Wealth Office issues.",
+  "rules": [
+    {
+      "match": {
+        "issue_key": "AIW-30",
+        "title": "Demo 002 end-to-end research memo execution"
+      },
+      "demo_id": "demo_002_research_memo",
+      "demo_record": {
+        "id": "demo_002_research_memo",
+        "title": "Standardize short single-question memo workflow",
+        "artifacts": {
+          "memo": "reports/demo_002_research_memo.md",
+          "handoff": "reports/aiw_30_deliverable_handoff.md",
+          "acceptance_precheck": "reports/aiw_30_acceptance_precheck.md"
+        },
+        "report": "reports/demo_002_research_memo.md",
+        "status": "offline_safe_first_pass",
+        "accepted_date": "__TODAY__",
+        "research_question": "Should AI Wealth Office standardize Demo 002 as a short, single-question research memo workflow before attempting broader multi-step strategy demos?"
+      }
+    }
+  ]
+}

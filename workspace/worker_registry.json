@@ -17,6 +17,48 @@
     "ceo_principle": "Prefer gpt-5.4 workers for day-to-day throughput and cost control. Escalate to gpt-5.5 only when the cheaper team cannot solve the problem."
   },
   "workers": {
+    "PM-A": {
+      "agent_id": "141e90bd-0347-45ac-a9a3-b927bf898d9d",
+      "role": "PM",
+      "runtime": "claude-code",
+      "runtime_id": "04f73d53-a3d1-482c-a125-367b170e3c06",
+      "model": "",
+      "reasoning_effort": "runtime_default",
+      "custom_args": [],
+      "cost_tier": "coordination",
+      "priority_use": "backlog_hygiene_and_project_followup",
+      "scope": [
+        "issue refinement",
+        "backlog hygiene",
+        "continuity briefs",
+        "dependency tracking",
+        "reviewer path recommendation",
+        "project status hygiene",
+        "scheduling recommendations"
+      ],
+      "focus": "Project manager for AIWealthOffice issue graph, continuity, backlog, and execution readiness.",
+      "resume_capability": "same_issue_comment_followup_verified"
+    },
+    "Investment-Analyst-A": {
+      "agent_id": "a1dfad19-7f22-440b-a748-5fe6c1fe0fb0",
+      "role": "Investment Analyst",
+      "runtime": "claude-code",
+      "runtime_id": "04f73d53-a3d1-482c-a125-367b170e3c06",
+      "model": "",
+      "reasoning_effort": "runtime_default",
+      "custom_args": [],
+      "cost_tier": "main_worker",
+      "priority_use": "primary_research_work",
+      "scope": [
+        "offline-safe research memos",
+        "hypothesis framing",
+        "evidence quality",
+        "risk language",
+        "next-step recommendations"
+      ],
+      "focus": "Offline-safe investment research analyst for AIWealthOffice Demo 002 and related memo work.",
+      "resume_capability": "same_issue_comment_followup_verified"
+    },
     "Coder-gpt-5.5-high-Consultant": {
       "agent_id": "353d8e8a-3d6b-435d-86db-e3d432d7f01c",
       "role": "Coder",

@@ -1,4 +1,4 @@
-# Current Gap List — AI Wealth Office (as of 2026-05-19)
+# Current Gap List — AI Wealth Office (as of 2026-05-20)
 
 ## Completed
 
@@ -16,6 +16,7 @@
 - [x] Role prompt v2, coder collaboration protocol, and prompt version manifest created.
 - [x] Multica same-issue resume tested for Claude Code and Codex.
 - [x] P0/P1 Multica projects created and historical issues linked.
+- [x] Delivery contract, acceptance, rework, and handoff templates added.
 
 ## Open Gaps / Backlog
 
@@ -23,6 +24,7 @@
 - [x] Expose `fresh/resume/fork/force-fresh` choice in CEO scripts.
 - [x] Persist issue continuity metadata locally and/or in Multica project/issue descriptions.
 - [x] Document operational policy for when to resume vs start fresh.
+- [x] Clarify Role System v2 ownership for CEO / PM / worker / reviewer decisions.
 
 ### Multica Project Management
 - [x] Use Multica projects as sprint containers: P0, P1, P2, etc.
@@ -30,4 +32,6 @@
 - [x] Keep experiments done/cancelled so they do not pollute active planning.
 
 ### Strategy Work
-- [ ] Do not start more strategy demos until Role System v2 and continuity workflow are clarified.
+- [x] Clarify Role System v2 and continuity workflow before starting more strategy demos.
+- [x] Start Demo 002 only after one template-driven issue acceptance path is exercised end-to-end. (AIW-30 accepted 2026-05-20)
+- [ ] AIW-31 rubric/QC expansion pending (AIW-29/30 complete; AIW-31 is next in activation order)

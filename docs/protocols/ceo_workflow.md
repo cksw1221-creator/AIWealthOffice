@@ -58,6 +58,37 @@ Print raw JSON instead of the text summary:
 python scripts/ceo_watch.py AIW-123 --json
 ```
 
+## Templates
+
+Use these templates to keep PM preparation, CEO review, and handoff structure consistent:
+
+- `docs/templates/issue_contract.md` - PM issue prep before dispatch or resume
+- `docs/templates/acceptance_checklist.md` - CEO/reviewer acceptance gate
+- `docs/templates/rework_note.md` - structured rework instruction for the next pass
+- `docs/templates/deliverable_handoff.md` - worker/reviewer/secretary output handoff
+
+A practical flow is:
+
+1. PM drafts `issue_contract.md`
+2. CEO dispatches from inline text or `--description-file`
+3. worker delivers artifacts and verification in the issue thread
+4. reviewer and CEO use `acceptance_checklist.md`
+5. if needed, CEO issues `rework_note.md`
+6. accepted work can be packaged with `deliverable_handoff.md`
+
+## Closure Checklist
+
+Before marking a local package as ready, promoting an issue into execution, or calling an item accepted/done, run the five-layer closure review in `docs/protocols/closure_checklist.md`.
+
+Use it especially when:
+
+- an issue becomes the current entry issue for a sprint
+- a local draft becomes `local ready`
+- an item is about to move into Multica execution
+- acceptance/rework status changes imply planning or metadata updates
+
+This prevents a “main file is done, but metadata/project state is stale” failure mode.
+
 ## Accept Work
 
 Approve and close an issue:
@@ -97,6 +128,7 @@ Dispatch defaults to `fresh`. Accept and rework default to `resume` because they
 Continuity decisions are persisted to `workspace/session_continuity.json` by default. Override the path with `--continuity-file` when testing or when maintaining a separate local workspace state.
 
 For operating guidance on when to pick each mode, see `docs/protocols/session_continuity.md`.
+For role boundaries, continuity recommendation ownership, CEO override rules, and accept/rework authority, see `docs/protocols/role_system_v2.md`.
 
 ## Notes
 
